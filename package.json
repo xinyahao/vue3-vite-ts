@@ -8,12 +8,15 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx --fix",
-    "format": "prettier --write \"./**/*.{html,vue,ts,js,json,md,cjs,json}\""
+    "format": "prettier --write \"./**/*.{html,vue,ts,js,json,md,cjs,json}\"",
+    "prepare": "husky install"
   },
   "dependencies": {
     "vue": "^3.2.45"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.3.0",
+    "@commitlint/config-conventional": "^17.3.0",
     "@types/node": "^18.11.17",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
@@ -27,8 +30,25 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-vue": "^9.8.0",
     "husky": "^8.0.2",
+    "lint-staged": "^13.1.0",
     "prettier": "^2.8.1",
     "typescript": "*",
     "vite": "^4.0.0"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,jsx,vue}": [
+      "yarn run lint",
+      "yarn run format",
+      "git add"
+    ],
+    "{!(package)*.json,*.code-snippets,.!(browserslist)*rc}": [
+      "prettier --write--parser json"
+    ],
+    "package.json": [
+      "prettier --write"
+    ],
+    "*.md": [
+      "prettier --write"
+    ]
   }
 }
