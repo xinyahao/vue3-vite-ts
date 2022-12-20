@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 import fs from 'fs'
 import dotenv from 'dotenv'
+import pxtovw from 'postcss-px-to-viewport-8-plugin'
 // import checkConfig from './src/utils/checkConfig'
 
 // Load the environment variable file based on the environment variables
@@ -21,21 +22,41 @@ console.log(`Starting server in ${process.env.NODE_ENV} mode`)
 
 export default defineConfig({
   plugins: [vue()],
+  css: {
+    postcss: {
+      plugins: [
+        pxtovw({
+          unitToConvert: 'px',
+          viewportWidth: 750,
+          unitPrecision: 6,
+          propList: ['*'],
+          viewportUnit: 'vw',
+          fontViewportUnit: 'vw',
+          selectorBlackList: ['ignore-'],
+          minPixelValue: 1,
+          mediaQuery: true,
+          replace: true,
+          exclude: [/node_modules\/vant/i],
+          landscape: false
+        })
+      ]
+    }
+  },
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
       '~': resolve(__dirname, 'src')
     }
   },
-  base: '/', // 设置打包路径
+  base: '/',
   server: {
     host: '0.0.0.0',
-    port: 3003, // 设置服务启动端口号
-    open: false, // 设置服务启动时是否自动打开浏览器
-    cors: true, // 允许跨域
+    port: 3003,
+    open: false,
+    cors: true,
     force: true,
 
-    // 设置代理，根据我们项目实际情况配置
+    // set proxy
     proxy: {
       '/api': {
         target: 'http://localhost:3001',

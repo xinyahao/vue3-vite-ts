@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <button type="button" @click="store.increment">
+    <button type="button" @click="store.increment" class="button">
       Double count is {{ store.doubleCounter }}
     </button>
   </div>
@@ -19,8 +19,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .read-the-docs {
   color: #888;
+}
+.button {
+  font-size: 26px;
+  width: 300px;
+  height: 80px;
 }
 </style>
