@@ -19,6 +19,7 @@ module.exports = {
   },
   plugins: ['vue', '@typescript-eslint'],
   rules: {
-    'prettier/prettier': 'off'
+    'prettier/prettier': 'off',
+    'vue/multi-word-component-names': 'off',
   }
 }
