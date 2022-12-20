@@ -4,9 +4,19 @@ import HelloWorld from '@/components/HelloWorld.vue'
 
 <template>
   <HelloWorld msg="Vite + Vue" />
+  <div class="box">
+    <p></p>
+  </div>
 </template>
 
-<style scoped>
+<style scoped lang="less">
+.box {
+  p {
+    height: 100px;
+    width: 100px;
+    background-color: red;
+  }
+}
 .logo {
   height: 6em;
   padding: 1.5em;
