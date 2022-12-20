@@ -1,42 +1,32 @@
-import axios, { AxiosRequestConfig, Method } from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
+import { RequestType } from './../types/axios'
 
-// 定义接口
-interface RequestType {
-  url?: string
-  method?: Method | string
-  params: any
-  data: any
-  cancel: Function
-}
-
-// 取消重复请求
+// Cancel repeat requests
 const request: Array<RequestType> = []
 const CancelToken = axios.CancelToken
 
-// axios 实例
+// axios
 const Axios = axios.create({
-  timeout: 15000, // 设置超时时间 15s,
+  timeout: 15000, // set Timeout 15s,
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'
   },
   baseURL: `${process.env.API_ROOT}`
 })
 
-// 移除重复请求
+// Remove repeat requests
 const removeRepeatRequest = (config: AxiosRequestConfig) => {
   for (const key in request) {
     const item: number = +key
     const list: RequestType = request[key]
-    // 当前请求在数组中存在时执行函数体
+    // The request already exists
     if (
       list.url === config.url &&
       list.method === config.method &&
       JSON.stringify(list.params) === JSON.stringify(config.params) &&
       JSON.stringify(list.data) === JSON.stringify(config.data)
     ) {
-      // 执行取消操作
-      list.cancel('操作太频繁，请稍后再试')
-      // 从数组中移除记录
+      list.cancel('The operation is too frequent, please try again later')
       request.splice(item, 1)
     }
   }
@@ -55,7 +45,7 @@ Axios.interceptors.request.use(
         cancel: c
       })
     })
-    // // 请求携带token
+    // // Request to carry tokens
     // const token = localStorage.getItem('id_token')
     // if (token) {
     //   config.headers.Authorization = `Bearer ${token}`
@@ -92,46 +82,45 @@ Axios.interceptors.response.use(
 
 const errorCode = (status: number): string => {
   let message = ''
-  // 状态码判断
   switch (status) {
     case 400:
-      message = '错误请求'
+      message = 'Bad Request'
       break
     case 401:
-      message = '未授权，请重新登录'
+      message = 'Unauthorized, please log in again'
       break
     case 403:
-      message = '拒绝访问'
+      message = '403 Forbidden'
       break
     case 404:
-      message = '请求错误,未找到该资源'
+      message = '404 not found'
       break
     case 405:
-      message = '请求方法未允许'
+      message = 'Method Not Allowed'
       break
     case 408:
-      message = '请求超时'
+      message = 'Request Timeout'
       break
     case 500:
-      message = '服务器端出错'
+      message = 'Server Error'
       break
     case 501:
-      message = '网络未实现'
+      message = 'Not Implemented'
       break
     case 502:
-      message = '网络错误'
+      message = 'Network error'
       break
     case 503:
-      message = '服务不可用'
+      message = 'Service Unavailable'
       break
     case 504:
-      message = '网络超时'
+      message = 'Network timeout'
       break
     case 505:
-      message = 'http版本不支持该请求'
+      message = 'HTTP Version Not Supported'
       break
     default:
-      message = `未知错误${status}`
+      message = `Unknown error${status}`
   }
   return message
 }

@@ -1,5 +1,12 @@
 export type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
+export interface RequestType {
+  url?: string
+  method?: Method | string
+  params: any
+  data: any
+  cancel: Function
+}
 export interface AxiosRequest {
   baseURL?: string
   url: string
